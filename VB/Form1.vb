@@ -25,12 +25,16 @@ Namespace RepPrintOnDotMatrix
 		Private Sub barButtonItem2_ItemClick(ByVal sender As Object, ByVal e As DevExpress.XtraBars.ItemClickEventArgs) Handles barButtonItem2.ItemClick
 			printControl1.PrintingSystem.ExportToCsv(Application.StartupPath & "\temporary.csv", New DevExpress.XtraPrinting.CsvExportOptions(",", Encoding.Default))
 
-			Dim psi As New ProcessStartInfo()
+			Dim startInfo As New ProcessStartInfo(Application.StartupPath & "\temporary.csv")
+			startInfo.Verb = "Open"
 
-			psi.FileName = Application.StartupPath & "\temporary.csv"
-			psi.Verb = "Print"
+			For Each v As String In startInfo.Verbs
+				If v = "Print" Then
+					startInfo.Verb = "Print"
+				End If
+			Next v
 
-			Process.Start(psi)
+			Process.Start(startInfo)
 		End Sub
 
 	End Class

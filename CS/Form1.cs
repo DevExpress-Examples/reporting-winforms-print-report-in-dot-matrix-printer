@@ -23,12 +23,13 @@ namespace RepPrintOnDotMatrix {
         private void barButtonItem2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
             printControl1.PrintingSystem.ExportToCsv(Application.StartupPath + "\\temporary.csv", new DevExpress.XtraPrinting.CsvExportOptions(",", Encoding.Default));
 
-            ProcessStartInfo psi = new ProcessStartInfo();
+            ProcessStartInfo startInfo = new ProcessStartInfo(Application.StartupPath + "\\temporary.csv");
+            startInfo.Verb = "Open";
 
-            psi.FileName = Application.StartupPath + "\\temporary.csv";
-            psi.Verb = "Print";
-
-            Process.Start(psi);
+            foreach (var verb in startInfo.Verbs) {
+                if (verb == "Print") startInfo.Verb = "Print";
+            }
+            Process.Start(startInfo);
         }
 
     }
