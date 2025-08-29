@@ -7,18 +7,21 @@
 
 # Reporting for WinForms - How to Print a Report on a Dot Matrix Printer
 
-This example prints a report on a dot matrix printer. The XtraReports Suite does not support matrix printer mode because a report document is always printed in graphics mode. Use the following approach illustrated in the example: export the report to text format (CSV), then send the resulting file to the printer driver.
+This example prints a report on a dot matrix printer. DevExpress Report components render reports in graphics mode only. So, for dot matrix devices, use the following approach:
+
+1. Export the report to text format (CSV or TXT).
+2. Send the resulting file to the printer driver.   
 
 ## Implementation Details
 
-Export the report to CSV and save it to a temporary file in the current application directory. Then call the [Process.Start](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.process.start) method to initiate printing.
+Export the report to CSV and save it to a temporary file (temporary.csv, in this example) in the current application directory. Then call the [Process.Start](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.process.start) method to initiate printing.
 Assign the `Print` verb to the `ProcessStartInfo.Verb` property. Then pass the [ProcessStartInfo](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.processstartinfo) instance to [Process.Start](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.process.start).
 
 ```cs
- private void Form1_Load(object sender, EventArgs e) {
-    XtraReport1 report = new XtraReport1();
-    report.CreateDocument();
-    printControl1.PrintingSystem = report.PrintingSystem;
+private void Form1_Load(object sender, EventArgs e) {
+   XtraReport1 report = new XtraReport1();
+   report.CreateDocument();
+   printControl1.PrintingSystem = report.PrintingSystem;
 }
 
 private void barButtonItem2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
@@ -48,3 +51,4 @@ private void barButtonItem2_ItemClick(object sender, DevExpress.XtraBars.ItemCli
 
 (you will be redirected to DevExpress.com to submit your response)
 <!-- feedback end -->
+
