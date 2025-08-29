@@ -5,11 +5,32 @@
 [![](https://img.shields.io/badge/💬_Leave_Feedback-feecdd?style=flat-square)](#does-this-example-address-your-development-requirementsobjectives)
 <!-- default badges end -->
 
-
 # Reporting for WinForms - How to Print a Report on a Dot Matrix Printer
 
+This example prints a report on a dot matrix printer. The XtraReports Suite does not support matrix printer mode because a report document is always printed in graphics mode. Use the following approach illustrated in the example: export the report to text format (CSV), then send the resulting file to the printer driver.
 
-This example shows how to print a report on a dot matrix printer. First, the report is exported to CSV format and saved to a temporary file in the current application directory. Then the [Process.Start](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.process.start) method initiates the printing process. In this example, the verb "Print" is assigned to the `ProcessStartInfo.Verb` property of the [ProcessStartInfo](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.processstartinfo) instance passed to the [Process.Start](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.process.start) method.
+## Implementation Details
+
+Export the report to CSV and save it to a temporary file in the current application directory. Then call the [Process.Start](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.process.start) method to initiate printing.
+Assign the `Print` verb to the `ProcessStartInfo.Verb` property. Then pass the [ProcessStartInfo](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.processstartinfo) instance to [Process.Start](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.process.start).
+
+```cs
+ private void Form1_Load(object sender, EventArgs e) {
+    XtraReport1 report = new XtraReport1();
+    report.CreateDocument();
+    printControl1.PrintingSystem = report.PrintingSystem;
+}
+
+private void barButtonItem2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) {
+    printControl1.PrintingSystem.ExportToCsv(Application.StartupPath + "\\temporary.csv", new DevExpress.XtraPrinting.CsvExportOptions(",", Encoding.Default));
+    ProcessStartInfo startInfo = new ProcessStartInfo(Application.StartupPath + "\\temporary.csv");
+    startInfo.Verb = "Open";
+    foreach (var verb in startInfo.Verbs) {
+        if (verb == "Print") startInfo.Verb = "Print";
+    }
+    Process.Start(startInfo);
+}
+```
 
 ## Files to Review
 
