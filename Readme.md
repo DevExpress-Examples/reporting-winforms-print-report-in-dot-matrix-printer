@@ -7,15 +7,16 @@
 
 # Reporting for WinForms - How to Print a Report on a Dot Matrix Printer
 
-This example prints a report on a dot matrix printer. DevExpress Report components render reports in graphics mode only. So, for dot matrix devices, use the following approach:
+To print a DevExpress report on a dot matrix printer, use the following workaround:
 
-1. Export the report to text format (CSV or TXT).
-2. Send the resulting file to the printer driver.   
+* Export the report to text format (CSV or TXT).
+* Send the resulting file to the printer.  
 
 ## Implementation Details
 
-Export the report to CSV and save it to a temporary file (temporary.csv, in this example) in the current application directory. Then call the [Process.Start](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.process.start) method to initiate printing.
-Assign the `Print` verb to the `ProcessStartInfo.Verb` property. Then pass the [ProcessStartInfo](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.processstartinfo) instance to [Process.Start](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.process.start).
+* Export the report to CSV and save it to a temporary file (temporary.csv, in this example). 
+* Create a [ProcessStartInfo](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.processstartinfo) object and assign “Print" to the `Verb` property (if this verb is listed among supported options).
+* Call the [Process.Start](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.process.start) method and pass the customized `ProcessStartInfo` object as the parameter.
 
 ```cs
 private void Form1_Load(object sender, EventArgs e) {
@@ -51,4 +52,5 @@ private void barButtonItem2_ItemClick(object sender, DevExpress.XtraBars.ItemCli
 
 (you will be redirected to DevExpress.com to submit your response)
 <!-- feedback end -->
+
 
